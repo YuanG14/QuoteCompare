@@ -44,3 +44,7 @@ Never commit `.env.local`, service-account JSON, private keys, or other secrets.
 ## Visual direction
 
 Phase 1 uses an editorial procurement design language: warm neutral surfaces, serif display typography, controlled orange accents, high-contrast black decision panels, generous spacing, and readable data-first components. The visual system is inspired by premium editorial/logistics interfaces without copying any single reference layout.
+
+## Readability standard
+
+QuoteCompare treats legibility as a product requirement, not a finishing detail. Visible metadata never drops below 12px, while body/helper text generally stays at 13–16px or larger. This baseline applies across navigation, cards, tables, forms, status labels, buttons, empty states, dialogs, mobile layouts, and all future phases.
