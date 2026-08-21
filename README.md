@@ -40,3 +40,7 @@ npm run format:check
 Copy `.env.example` to `.env.local` only when Phase 2 begins and you have a Firebase project.
 
 Never commit `.env.local`, service-account JSON, private keys, or other secrets.
+
+## Visual direction
+
+Phase 1 uses an editorial procurement design language: warm neutral surfaces, serif display typography, controlled orange accents, high-contrast black decision panels, generous spacing, and readable data-first components. The visual system is inspired by premium editorial/logistics interfaces without copying any single reference layout.

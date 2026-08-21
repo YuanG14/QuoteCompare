@@ -8,9 +8,9 @@ export function WorkflowPreview() {
     <Panel className="workflow-panel">
       <div className="panel-heading panel-heading--compact">
         <div>
-          <p className="eyebrow">Procurement workflow</p>
-          <h2>One traceable path from need to award</h2>
-          <p className="panel-description">QuoteCompare is structured around procurement decisions, not isolated file uploads.</p>
+          <p className="eyebrow">The process</p>
+          <h2>From requirement to supplier award.</h2>
+          <p className="panel-description">Every stage stays connected so the final decision has context, evidence, and an audit trail.</p>
         </div>
         <span className="workflow-security"><Icon name="shield" width={16} height={16} /> Human-controlled</span>
       </div>
