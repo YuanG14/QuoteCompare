@@ -56,7 +56,7 @@ export default function SignUpPage() {
     <AuthShell
       eyebrow="Create your account"
       title="Start with a verified identity."
-      description="Phase 2 establishes secure account access before organization and role permissions arrive next."
+      description="Create a verified identity first; after verification, QuoteCompare guides you into an organization-scoped workspace with rules-backed access."
       footer={<p>Already have an account? <Link href="/signin">Sign in</Link></p>}
     >
       {!configured ? <div className="form-notice form-notice--warning" role="alert">Firebase is not configured yet. Add your web app values to <code>.env.local</code> before creating an account.</div> : null}

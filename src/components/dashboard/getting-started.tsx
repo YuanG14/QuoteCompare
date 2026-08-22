@@ -5,7 +5,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 const steps = [
   { title: "Application foundation", description: "Core architecture, navigation, and design language are in place.", complete: true },
   { title: "Connect Firebase", description: "Email/password authentication, verification, recovery, and protected routes are active.", complete: true },
-  { title: "Build your organization security model", description: "Organization membership, roles, Firestore rules, and Storage rules arrive in Phase 3.", complete: false },
+  { title: "Build your organization security model", description: "Organization membership, role permissions, Firestore rules, and Storage rules are active.", complete: true },
 ];
 
 export function GettingStarted() {
@@ -17,7 +17,7 @@ export function GettingStarted() {
           <h2>Set up the system in the right order.</h2>
           <p className="panel-description">A controlled setup path keeps permissions, procurement data, and future automation clean from the beginning.</p>
         </div>
-        <StatusBadge tone="info">2 of 3 complete</StatusBadge>
+        <StatusBadge tone="info">3 of 3 complete</StatusBadge>
       </div>
       <div className="setup-list">
         {steps.map((step, index) => (
@@ -29,7 +29,7 @@ export function GettingStarted() {
               <strong>{step.title}</strong>
               <p>{step.description}</p>
             </div>
-            <span className="setup-state">{step.complete ? "Done" : "Upcoming"}</span>
+            <span className="setup-state">Done</span>
           </div>
         ))}
       </div>

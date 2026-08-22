@@ -1,0 +1,42 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function membership(orgId) {
+      return firestore.get(/databases/(default)/documents/organizations/$(orgId)/members/$(request.auth.uid));
+    }
+
+    function isMember(orgId) {
+      return signedIn() && membership(orgId).data.status == 'active';
+    }
+
+    function canManageFiles(orgId) {
+      return isMember(orgId)
+        && membership(orgId).data.role in ['admin', 'procurement_manager', 'procurement_staff'];
+    }
+
+    function allowedQuotationType() {
+      return request.resource.contentType.matches('application/pdf')
+        || request.resource.contentType.matches('image/.*')
+        || request.resource.contentType.matches('application/vnd.ms-excel')
+        || request.resource.contentType.matches('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        || request.resource.contentType.matches('application/msword')
+        || request.resource.contentType.matches('application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    }
+
+    match /organizations/{orgId}/quotations/{quotationId}/{fileName} {
+      allow read: if isMember(orgId);
+      allow create, update: if canManageFiles(orgId)
+        && request.resource.size <= 20 * 1024 * 1024
+        && allowedQuotationType();
+      allow delete: if canManageFiles(orgId);
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
