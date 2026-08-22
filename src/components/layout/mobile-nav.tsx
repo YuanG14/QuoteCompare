@@ -2,15 +2,31 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { primaryNavigation, secondaryNavigation } from "@/config/navigation";
 import { Brand } from "@/components/layout/brand";
 import { Icon } from "@/components/ui/icons";
+import { signOutCurrentUser } from "@/lib/auth/service";
+import { useAuth } from "@/providers/auth-provider";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useAuth();
   const items = [...primaryNavigation, ...secondaryNavigation];
+
+  async function handleSignOut() {
+    setSigningOut(true);
+    try {
+      await signOutCurrentUser();
+      setOpen(false);
+      router.replace("/signin");
+    } finally {
+      setSigningOut(false);
+    }
+  }
 
   return (
     <div className="mobile-nav">
@@ -43,6 +59,10 @@ export function MobileNav() {
               </Link>
             );
           })}
+          <div className="mobile-account">
+            <div><strong>{user?.displayName || "Workspace member"}</strong><span>{user?.email}</span></div>
+            <button type="button" onClick={handleSignOut} disabled={signingOut}>{signingOut ? "Signing out…" : "Sign out"}</button>
+          </div>
         </nav>
       ) : null}
     </div>
