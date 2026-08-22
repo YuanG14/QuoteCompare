@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main className="landing-page">
       <header className="landing-nav">
-        <Brand />
+        <Brand href="/" />
         <nav aria-label="Account navigation" className="landing-nav__actions">
           <Link className="button button--secondary" href="/signin">Sign in</Link>
           <Link className="button button--primary" href="/signup">Create account</Link>

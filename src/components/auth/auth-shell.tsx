@@ -18,7 +18,7 @@ export function AuthShell({
   return (
     <main className="auth-page">
       <header className="auth-header">
-        <Link href="/" aria-label="QuoteCompare home"><Brand /></Link>
+        <Brand href="/" />
         <Link className="auth-back-link" href="/">Back to overview</Link>
       </header>
 
