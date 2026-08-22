@@ -1,4 +1,5 @@
 import { getApps, initializeApp, type FirebaseApp } from "firebase/app";
+import { getAuth, type Auth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -9,14 +10,20 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const hasFirebaseConfig = Object.values(firebaseConfig).every(Boolean);
+export function isFirebaseConfigured(): boolean {
+  return Object.values(firebaseConfig).every((value) => Boolean(value?.trim()));
+}
 
 export function getFirebaseClientApp(): FirebaseApp {
-  if (!hasFirebaseConfig) {
+  if (!isFirebaseConfigured()) {
     throw new Error(
-      "Firebase is not configured yet. Phase 2 will connect the values from .env.local.",
+      "Firebase is not configured. Copy .env.example to .env.local and add your Firebase web app values.",
     );
   }
 
   return getApps()[0] ?? initializeApp(firebaseConfig);
+}
+
+export function getFirebaseAuth(): Auth {
+  return getAuth(getFirebaseClientApp());
 }

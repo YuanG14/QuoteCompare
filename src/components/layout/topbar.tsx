@@ -1,6 +1,33 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Icon } from "@/components/ui/icons";
+import { signOutCurrentUser } from "@/lib/auth/service";
+import { useAuth } from "@/providers/auth-provider";
+
+function getInitials(name: string | null, email: string | null): string {
+  const source = name?.trim() || email?.split("@")[0] || "QC";
+  return source.split(/[\s._-]+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase()).join("") || "QC";
+}
 
 export function Topbar() {
+  const router = useRouter();
+  const { user } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+  const displayName = user?.displayName || "Workspace member";
+
+  async function handleSignOut() {
+    setSigningOut(true);
+    try {
+      await signOutCurrentUser();
+      router.replace("/signin");
+    } finally {
+      setSigningOut(false);
+    }
+  }
+
   return (
     <header className="topbar">
       <div className="search-shell" role="search">
@@ -10,11 +37,19 @@ export function Topbar() {
         <kbd>⌘ K</kbd>
       </div>
       <div className="topbar-actions">
-        <span className="foundation-pill"><span className="foundation-dot" /> Foundation ready</span>
-        <button className="profile-button" type="button" aria-label="Open account menu" disabled>
-          <span className="profile-avatar">QC</span>
-          <span className="profile-copy"><strong>Workspace Admin</strong><small>Phase 1 preview</small></span>
-        </button>
+        <span className="foundation-pill"><span className="foundation-dot" /> Firebase authenticated</span>
+        <div className="profile-menu">
+          <button className="profile-button" type="button" aria-label="Open account menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}>
+            <span className="profile-avatar">{getInitials(user?.displayName ?? null, user?.email ?? null)}</span>
+            <span className="profile-copy"><strong>{displayName}</strong><small>{user?.email ?? "Authenticated account"}</small></span>
+          </button>
+          {menuOpen ? (
+            <div className="profile-popover" role="menu">
+              <div className="profile-popover__identity"><strong>{displayName}</strong><span>{user?.email}</span><span className="verified-label">Verified email</span></div>
+              <button type="button" role="menuitem" onClick={handleSignOut} disabled={signingOut}>{signingOut ? "Signing out…" : "Sign out"}</button>
+            </div>
+          ) : null}
+        </div>
       </div>
     </header>
   );
