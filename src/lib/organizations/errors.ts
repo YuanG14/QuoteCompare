@@ -3,7 +3,7 @@ import { FirebaseError } from "firebase/app";
 export function getOrganizationErrorMessage(error: unknown): string {
   if (error instanceof FirebaseError) {
     if (error.code === "permission-denied") {
-      return "Firebase blocked this action. Check that the Phase 3 Firestore rules are deployed and that your account has the required organization role.";
+      return "Firebase blocked this action. Check that the current Firestore rules are deployed and that your account has the required organization role.";
     }
     if (error.code === "unavailable") {
       return "Firebase is temporarily unavailable. Check your connection and try again.";

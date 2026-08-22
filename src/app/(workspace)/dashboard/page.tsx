@@ -15,7 +15,8 @@ export default function DashboardPage() {
         </div>
         <div className="dashboard-hero__aside">
           <p>
-            Bring supplier quotations into one structured workspace, compare the details that matter, and keep the final decision human-controlled.
+            Bring supplier quotations into one structured workspace, compare the details that
+            matter, and keep the final decision human-controlled.
           </p>
           <Link href="/procurement" className="button button--accent">
             <Icon name="plus" width={18} height={18} />
@@ -28,14 +29,17 @@ export default function DashboardPage() {
         <div className="decision-canvas">
           <div className="decision-canvas__topline">
             <span className="decision-canvas__label">Comparison workspace</span>
-            <span className="decision-canvas__status"><span /> Ready for your first RFQ</span>
+            <span className="decision-canvas__status">
+              <span /> Ready for your first RFQ
+            </span>
           </div>
           <div className="decision-canvas__body">
             <div className="decision-canvas__copy">
               <span className="display-number">01</span>
               <h2>One place for the numbers, terms, and trade-offs.</h2>
               <p>
-                QuoteCompare will normalize supplier offers into a clear decision view instead of another spreadsheet you have to rebuild by hand.
+                QuoteCompare will normalize supplier offers into a clear decision view instead of
+                another spreadsheet you have to rebuild by hand.
               </p>
               <div className="decision-tags" aria-label="Planned comparison criteria">
                 <span>Total cost</span>
@@ -85,10 +89,30 @@ export default function DashboardPage() {
       </section>
 
       <section className="metric-grid" aria-label="Procurement summary">
-        <MetricCard label="Active comparisons" value="0" helper="No comparisons in progress" icon="dashboard" />
-        <MetricCard label="Pending reviews" value="0" helper="Nothing needs verification" icon="clock" />
-        <MetricCard label="Suppliers" value="0" helper="Supplier directory is empty" icon="supplier" />
-        <MetricCard label="Awarded decisions" value="0" helper="No supplier awards recorded" icon="award" />
+        <MetricCard
+          label="Active comparisons"
+          value="0"
+          helper="No comparisons in progress"
+          icon="dashboard"
+        />
+        <MetricCard
+          label="Pending reviews"
+          value="0"
+          helper="Nothing needs verification"
+          icon="clock"
+        />
+        <MetricCard
+          label="Suppliers"
+          value="0"
+          helper="Supplier directory is empty"
+          icon="supplier"
+        />
+        <MetricCard
+          label="Awarded decisions"
+          value="0"
+          helper="No supplier awards recorded"
+          icon="award"
+        />
       </section>
 
       <section className="dashboard-grid">

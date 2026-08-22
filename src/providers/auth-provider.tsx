@@ -15,11 +15,12 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [status, setStatus] = useState<AuthStatus>("loading");
+  const [status, setStatus] = useState<AuthStatus>(() =>
+    isFirebaseConfigured() ? "loading" : "configuration-missing",
+  );
 
   useEffect(() => {
     if (!isFirebaseConfigured()) {
-      setStatus("configuration-missing");
       return;
     }
 

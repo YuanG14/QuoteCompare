@@ -1,5 +1,8 @@
-import { PagePlaceholder } from "@/components/ui/page-placeholder";
+import type { Metadata } from "next";
+import { SupplierDirectory } from "@/components/suppliers/supplier-directory";
+
+export const metadata: Metadata = { title: "Suppliers" };
 
 export default function SuppliersPage() {
-  return <PagePlaceholder eyebrow="Suppliers" title="Supplier directory" description="Maintain a trusted directory of vendors, contacts, and later their quotation and performance history." icon="supplier" phase="Phase 4" />;
+  return <SupplierDirectory />;
 }

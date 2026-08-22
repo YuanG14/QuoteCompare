@@ -54,18 +54,64 @@ export default function SignInPage() {
       eyebrow="Welcome back"
       title="Sign in to QuoteCompare."
       description="Access your protected procurement workspace with your Firebase account."
-      footer={<p>New to QuoteCompare? <Link href="/signup">Create an account</Link></p>}
+      footer={
+        <p>
+          New to QuoteCompare? <Link href="/signup">Create an account</Link>
+        </p>
+      }
     >
-      {!configured ? <div className="form-notice form-notice--warning" role="alert">Firebase is not configured yet. Add your web app values to <code>.env.local</code> before signing in.</div> : null}
-      {errors.form ? <div className="form-notice form-notice--error" role="alert">{errors.form}</div> : null}
-      <form className="auth-form" onSubmit={handleSubmit} noValidate>
-        <FormField id="signin-email" label="Email address" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} error={errors.email} placeholder="name@company.com" />
-        <FormField id="signin-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} error={errors.password} placeholder="Enter your password" />
-        <div className="form-row form-row--between">
-          <label className="checkbox-field"><input type="checkbox" checked={rememberMe} onChange={(event) => setRememberMe(event.target.checked)} /><span>Keep me signed in</span></label>
-          <Link className="text-link" href="/forgot-password">Forgot password?</Link>
+      {!configured ? (
+        <div className="form-notice form-notice--warning" role="alert">
+          Firebase is not configured yet. Add your web app values to <code>.env.local</code> before
+          signing in.
         </div>
-        <button className="button button--accent auth-submit" type="submit" disabled={submitting || !configured}>{submitting ? "Signing in…" : "Sign in securely"}</button>
+      ) : null}
+      {errors.form ? (
+        <div className="form-notice form-notice--error" role="alert">
+          {errors.form}
+        </div>
+      ) : null}
+      <form className="auth-form" onSubmit={handleSubmit} noValidate>
+        <FormField
+          id="signin-email"
+          label="Email address"
+          type="email"
+          autoComplete="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          error={errors.email}
+          placeholder="name@company.com"
+        />
+        <FormField
+          id="signin-password"
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          error={errors.password}
+          placeholder="Enter your password"
+        />
+        <div className="form-row form-row--between">
+          <label className="checkbox-field">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(event) => setRememberMe(event.target.checked)}
+            />
+            <span>Keep me signed in</span>
+          </label>
+          <Link className="text-link" href="/forgot-password">
+            Forgot password?
+          </Link>
+        </div>
+        <button
+          className="button button--accent auth-submit"
+          type="submit"
+          disabled={submitting || !configured}
+        >
+          {submitting ? "Signing in…" : "Sign in securely"}
+        </button>
       </form>
     </AuthShell>
   );

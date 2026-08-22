@@ -45,7 +45,8 @@ function readRole(data: DocumentData): OrganizationRole {
 }
 
 export async function createOrganizationForUser(user: User, name: string): Promise<string> {
-  if (!user.emailVerified) throw new Error("Verify your email before creating an organization workspace.");
+  if (!user.emailVerified)
+    throw new Error("Verify your email before creating an organization workspace.");
 
   const db = getFirebaseFirestore();
   const organizationRef = doc(collection(db, "organizations"));
@@ -92,7 +93,9 @@ export async function createOrganizationForUser(user: User, name: string): Promi
   return organizationRef.id;
 }
 
-export async function loadOrganizationContext(user: User): Promise<LoadedOrganizationContext | null> {
+export async function loadOrganizationContext(
+  user: User,
+): Promise<LoadedOrganizationContext | null> {
   const db = getFirebaseFirestore();
   const profileSnapshot = await getDoc(doc(db, "users", user.uid));
   if (!profileSnapshot.exists()) return null;
@@ -107,7 +110,9 @@ export async function loadOrganizationContext(user: User): Promise<LoadedOrganiz
   ]);
 
   if (!organizationSnapshot.exists() || !membershipSnapshot.exists()) {
-    throw new Error("Your account points to an organization that is unavailable. Ask an administrator to restore your membership or contact support.");
+    throw new Error(
+      "Your account points to an organization that is unavailable. Ask an administrator to restore your membership or contact support.",
+    );
   }
 
   const organizationData = organizationSnapshot.data();
@@ -133,14 +138,17 @@ export async function loadOrganizationContext(user: User): Promise<LoadedOrganiz
       organizationId: activeOrganizationId,
       userId: readString(membershipData, "userId") || user.uid,
       email: readString(membershipData, "email") || user.email || "",
-      displayName: readString(membershipData, "displayName") || user.displayName || "Workspace member",
+      displayName:
+        readString(membershipData, "displayName") || user.displayName || "Workspace member",
       role: readRole(membershipData),
       status: "active",
     },
   };
 }
 
-export async function listOrganizationMembers(organizationId: string): Promise<OrganizationMembership[]> {
+export async function listOrganizationMembers(
+  organizationId: string,
+): Promise<OrganizationMembership[]> {
   const db = getFirebaseFirestore();
   const snapshot = await getDocs(collection(db, "organizations", organizationId, "members"));
 
@@ -154,7 +162,7 @@ export async function listOrganizationMembers(organizationId: string): Promise<O
         email: readString(data, "email"),
         displayName: readString(data, "displayName") || "Workspace member",
         role: readRole(data),
-        status: status === "suspended" ? "suspended" as const : "active" as const,
+        status: status === "suspended" ? ("suspended" as const) : ("active" as const),
       };
     })
     .sort((a, b) => a.displayName.localeCompare(b.displayName));

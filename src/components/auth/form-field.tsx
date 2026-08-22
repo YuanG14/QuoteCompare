@@ -7,7 +7,9 @@ type FormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export function FormField({ label, error, hint, id, ...props }: FormFieldProps) {
-  const describedBy = [error ? `${id}-error` : "", hint ? `${id}-hint` : ""].filter(Boolean).join(" ");
+  const describedBy = [error ? `${id}-error` : "", hint ? `${id}-hint` : ""]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <label className="form-field" htmlFor={id}>
@@ -19,8 +21,16 @@ export function FormField({ label, error, hint, id, ...props }: FormFieldProps) 
         aria-describedby={describedBy || undefined}
         {...props}
       />
-      {error ? <span className="form-error" id={`${id}-error`}>{error}</span> : null}
-      {hint ? <span className="form-hint" id={`${id}-hint`}>{hint}</span> : null}
+      {error ? (
+        <span className="form-error" id={`${id}-error`}>
+          {error}
+        </span>
+      ) : null}
+      {hint ? (
+        <span className="form-hint" id={`${id}-hint`}>
+          {hint}
+        </span>
+      ) : null}
     </label>
   );
 }

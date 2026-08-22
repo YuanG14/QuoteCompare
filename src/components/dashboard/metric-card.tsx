@@ -15,7 +15,9 @@ export function MetricCard({
     <article className="metric-card">
       <div className="metric-card__header">
         <span>{label}</span>
-        <span className="metric-icon"><Icon name={icon} width={18} height={18} /></span>
+        <span className="metric-icon">
+          <Icon name={icon} width={18} height={18} />
+        </span>
       </div>
       <div className="metric-card__value-row">
         <strong className="metric-value">{value}</strong>

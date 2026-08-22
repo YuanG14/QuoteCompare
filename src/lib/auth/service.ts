@@ -23,11 +23,7 @@ export async function signInWithEmail(
   return credential.user;
 }
 
-export async function createAccount(
-  name: string,
-  email: string,
-  password: string,
-): Promise<User> {
+export async function createAccount(name: string, email: string, password: string): Promise<User> {
   const auth = getFirebaseAuth();
   await setPersistence(auth, browserLocalPersistence);
   const credential = await createUserWithEmailAndPassword(auth, email.trim(), password);

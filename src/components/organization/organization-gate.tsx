@@ -21,8 +21,12 @@ export function OrganizationGate({ children }: { children: ReactNode }) {
           <h1>We could not load your organization.</h1>
           <p>{error}</p>
           <div className="state-actions">
-            <button className="button button--primary" type="button" onClick={() => void refresh()}>Try again</button>
-            <Link className="button button--secondary" href="/organization/setup">Organization setup</Link>
+            <button className="button button--primary" type="button" onClick={() => void refresh()}>
+              Try again
+            </button>
+            <Link className="button button--secondary" href="/organization/setup">
+              Organization setup
+            </Link>
           </div>
         </section>
       </main>
@@ -35,7 +39,10 @@ export function OrganizationGate({ children }: { children: ReactNode }) {
         <section className="state-card">
           <span className="state-label">Secure organization</span>
           <h1>Checking workspace access.</h1>
-          <p>QuoteCompare is verifying your organization membership and role before loading procurement data.</p>
+          <p>
+            QuoteCompare is verifying your organization membership and role before loading
+            procurement data.
+          </p>
         </section>
       </main>
     );

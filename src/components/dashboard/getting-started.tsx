@@ -3,9 +3,28 @@ import { Panel } from "@/components/ui/panel";
 import { StatusBadge } from "@/components/ui/status-badge";
 
 const steps = [
-  { title: "Application foundation", description: "Core architecture, navigation, and design language are in place.", complete: true },
-  { title: "Connect Firebase", description: "Email/password authentication, verification, recovery, and protected routes are active.", complete: true },
-  { title: "Build your organization security model", description: "Organization membership, role permissions, Firestore rules, and Storage rules are active.", complete: true },
+  {
+    title: "Application foundation",
+    description: "Core architecture, navigation, and design language are in place.",
+    complete: true,
+  },
+  {
+    title: "Connect Firebase",
+    description:
+      "Email/password authentication, verification, recovery, and protected routes are active.",
+    complete: true,
+  },
+  {
+    title: "Build your organization security model",
+    description: "Organization membership, role permissions, and Firestore rules are active.",
+    complete: true,
+  },
+  {
+    title: "Create the supplier directory",
+    description:
+      "Supplier contacts, categories, statuses, search, and role-aware editing are active.",
+    complete: true,
+  },
 ];
 
 export function GettingStarted() {
@@ -15,15 +34,22 @@ export function GettingStarted() {
         <div>
           <p className="eyebrow">Workspace setup</p>
           <h2>Set up the system in the right order.</h2>
-          <p className="panel-description">A controlled setup path keeps permissions, procurement data, and future automation clean from the beginning.</p>
+          <p className="panel-description">
+            A controlled setup path keeps permissions, procurement data, and future automation clean
+            from the beginning.
+          </p>
         </div>
-        <StatusBadge tone="info">3 of 3 complete</StatusBadge>
+        <StatusBadge tone="info">4 of 4 complete</StatusBadge>
       </div>
       <div className="setup-list">
         {steps.map((step, index) => (
           <div className="setup-row" key={step.title}>
             <span className={`setup-step ${step.complete ? "setup-step--complete" : ""}`}>
-              {step.complete ? <Icon name="check" width={16} height={16} /> : String(index + 1).padStart(2, "0")}
+              {step.complete ? (
+                <Icon name="check" width={16} height={16} />
+              ) : (
+                String(index + 1).padStart(2, "0")
+              )}
             </span>
             <div className="setup-row__copy">
               <strong>{step.title}</strong>

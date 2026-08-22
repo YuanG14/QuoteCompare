@@ -48,9 +48,15 @@ export function OrganizationSetupForm() {
 
   return (
     <form className="organization-setup-form" onSubmit={handleSubmit} noValidate>
-      {formError ? <div className="form-notice form-notice--error" role="alert">{formError}</div> : null}
+      {formError ? (
+        <div className="form-notice form-notice--error" role="alert">
+          {formError}
+        </div>
+      ) : null}
       <div className="form-field">
-        <label className="form-label" htmlFor="organization-name">Organization name</label>
+        <label className="form-label" htmlFor="organization-name">
+          Organization name
+        </label>
         <input
           className={`form-input ${fieldError ? "form-input--error" : ""}`}
           id="organization-name"
@@ -64,13 +70,28 @@ export function OrganizationSetupForm() {
           aria-invalid={Boolean(fieldError)}
           aria-describedby={fieldError ? "organization-name-error" : "organization-name-hint"}
         />
-        {fieldError ? <span className="form-error" id="organization-name-error">{fieldError}</span> : <span className="form-hint" id="organization-name-hint">This becomes the workspace name shown to your members.</span>}
+        {fieldError ? (
+          <span className="form-error" id="organization-name-error">
+            {fieldError}
+          </span>
+        ) : (
+          <span className="form-hint" id="organization-name-hint">
+            This becomes the workspace name shown to your members.
+          </span>
+        )}
       </div>
-      <button className="button button--accent organization-setup-submit" type="submit" disabled={submitting || !user}>
+      <button
+        className="button button--accent organization-setup-submit"
+        type="submit"
+        disabled={submitting || !user}
+      >
         <Icon name="shield" width={18} height={18} />
         <span>{submitting ? "Creating secure workspace…" : "Create organization workspace"}</span>
       </button>
-      <p className="organization-setup-footnote">You will become the first <strong>Admin</strong>. Roles are enforced by Firestore Security Rules, not just the interface.</p>
+      <p className="organization-setup-footnote">
+        You will become the first <strong>Admin</strong>. Roles are enforced by Firestore Security
+        Rules, not just the interface.
+      </p>
     </form>
   );
 }
