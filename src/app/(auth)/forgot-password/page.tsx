@@ -29,7 +29,9 @@ export default function ForgotPasswordPage() {
     setSubmitting(true);
     try {
       await requestPasswordReset(email);
-      setMessage("If an account is eligible for password reset, Firebase will send instructions to that email address.");
+      setMessage(
+        "If an account is eligible for password reset, Firebase will send instructions to that email address.",
+      );
     } catch (resetError) {
       setError(getAuthErrorMessage(resetError));
     } finally {
@@ -42,12 +44,35 @@ export default function ForgotPasswordPage() {
       eyebrow="Account recovery"
       title="Reset your password."
       description="Enter the email connected to your QuoteCompare account."
-      footer={<p>Remember your password? <Link href="/signin">Return to sign in</Link></p>}
+      footer={
+        <p>
+          Remember your password? <Link href="/signin">Return to sign in</Link>
+        </p>
+      }
     >
-      {message ? <div className="form-notice form-notice--success" role="status">{message}</div> : null}
+      {message ? (
+        <div className="form-notice form-notice--success" role="status">
+          {message}
+        </div>
+      ) : null}
       <form className="auth-form" onSubmit={handleSubmit} noValidate>
-        <FormField id="reset-email" label="Email address" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} error={error ?? undefined} placeholder="name@company.com" />
-        <button className="button button--accent auth-submit" type="submit" disabled={submitting || !configured}>{submitting ? "Sending…" : "Send reset instructions"}</button>
+        <FormField
+          id="reset-email"
+          label="Email address"
+          type="email"
+          autoComplete="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          error={error ?? undefined}
+          placeholder="name@company.com"
+        />
+        <button
+          className="button button--accent auth-submit"
+          type="submit"
+          disabled={submitting || !configured}
+        >
+          {submitting ? "Sending…" : "Send reset instructions"}
+        </button>
       </form>
     </AuthShell>
   );

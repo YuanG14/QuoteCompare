@@ -25,6 +25,26 @@ service cloud.firestore {
       return role in ['admin', 'procurement_manager', 'procurement_staff', 'viewer'];
     }
 
+    function validSupplier(orgId, data) {
+      return data.organizationId == orgId
+        && data.name is string && data.name.size() >= 2 && data.name.size() <= 120
+        && data.normalizedName is string && data.normalizedName.size() >= 2 && data.normalizedName.size() <= 120
+        && data.category is string && data.category.size() >= 2 && data.category.size() <= 80
+        && data.contactName is string && data.contactName.size() <= 80
+        && data.email is string && data.email.size() <= 160
+        && data.phone is string && data.phone.size() <= 30
+        && data.address is string && data.address.size() <= 240
+        && data.notes is string && data.notes.size() <= 600
+        && data.status in ['active', 'inactive']
+        && data.createdBy is string && data.updatedBy is string
+        && data.createdAt is timestamp && data.updatedAt is timestamp
+        && data.keys().hasOnly([
+          'organizationId', 'name', 'normalizedName', 'category', 'contactName',
+          'email', 'phone', 'address', 'notes', 'status', 'createdBy', 'updatedBy',
+          'createdAt', 'updatedAt'
+        ]);
+    }
+
     match /users/{userId} {
       allow read: if isSelf(userId);
       allow create: if isSelf(userId)
@@ -70,6 +90,24 @@ service cloud.firestore {
           && request.resource.data.status in ['active', 'suspended']
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['role', 'status', 'updatedAt']);
         allow delete: if hasRole(orgId, ['admin']) && memberId != request.auth.uid;
+      }
+
+      match /suppliers/{supplierId} {
+        allow read: if isMember(orgId);
+        allow create: if hasRole(orgId, ['admin', 'procurement_manager', 'procurement_staff'])
+          && validSupplier(orgId, request.resource.data)
+          && request.resource.data.createdBy == request.auth.uid
+          && request.resource.data.updatedBy == request.auth.uid
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.updatedAt == request.time;
+        allow update: if hasRole(orgId, ['admin', 'procurement_manager', 'procurement_staff'])
+          && validSupplier(orgId, request.resource.data)
+          && request.resource.data.organizationId == resource.data.organizationId
+          && request.resource.data.createdBy == resource.data.createdBy
+          && request.resource.data.createdAt == resource.data.createdAt
+          && request.resource.data.updatedBy == request.auth.uid
+          && request.resource.data.updatedAt == request.time;
+        allow delete: if false;
       }
     }
   }

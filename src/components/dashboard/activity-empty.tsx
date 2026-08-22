@@ -12,9 +12,14 @@ export function ActivityEmpty() {
         </div>
       </div>
       <div className="empty-state">
-        <span className="empty-state__icon"><Icon name="quotation" width={24} height={24} /></span>
+        <span className="empty-state__icon">
+          <Icon name="quotation" width={24} height={24} />
+        </span>
         <h3>Your comparison queue is clear.</h3>
-        <p>Once purchase requests and supplier quotations are added, current reviews and decisions will appear here.</p>
+        <p>
+          Once purchase requests and supplier quotations are added, current reviews and decisions
+          will appear here.
+        </p>
         <Link className="text-link text-link--on-dark" href="/procurement">
           Open procurement <Icon name="arrow" width={16} height={16} />
         </Link>

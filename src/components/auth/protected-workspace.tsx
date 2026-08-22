@@ -25,10 +25,12 @@ export function ProtectedWorkspace({ children }: { children: ReactNode }) {
           <span className="state-label">Firebase setup required</span>
           <h1>Connect your Firebase project.</h1>
           <p>
-            Copy <code>.env.example</code> to <code>.env.local</code>, add your Firebase web app values,
-            then restart the development server.
+            Copy <code>.env.example</code> to <code>.env.local</code>, add your Firebase web app
+            values, then restart the development server.
           </p>
-          <Link className="button button--primary" href="/">View setup overview</Link>
+          <Link className="button button--primary" href="/">
+            View setup overview
+          </Link>
         </section>
       </main>
     );

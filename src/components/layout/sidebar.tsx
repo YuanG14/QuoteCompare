@@ -9,7 +9,14 @@ import { ORGANIZATION_ROLE_LABELS } from "@/lib/organizations/permissions";
 import { useOrganization } from "@/providers/organization-provider";
 
 function initials(name: string): string {
-  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase()).join("") || "QC";
+  return (
+    name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase())
+      .join("") || "QC"
+  );
 }
 
 export function Sidebar() {
@@ -44,10 +51,14 @@ export function Sidebar() {
       <div className="sidebar-footer">
         <div className="nav-stack">{secondaryNavigation.map(renderItem)}</div>
         <div className="workspace-card">
-          <span className="workspace-avatar" aria-hidden="true">{initials(organization?.name ?? "QuoteCompare")}</span>
+          <span className="workspace-avatar" aria-hidden="true">
+            {initials(organization?.name ?? "QuoteCompare")}
+          </span>
           <span className="workspace-card__copy">
             <strong>{organization?.name ?? "QuoteCompare"}</strong>
-            <small>{membership ? ORGANIZATION_ROLE_LABELS[membership.role] : "Secure workspace"}</small>
+            <small>
+              {membership ? ORGANIZATION_ROLE_LABELS[membership.role] : "Secure workspace"}
+            </small>
           </span>
         </div>
       </div>

@@ -11,7 +11,13 @@ import { validateDisplayName, validateEmail, validatePassword } from "@/lib/auth
 import { isFirebaseConfigured } from "@/lib/firebase/client";
 import { useAuth } from "@/providers/auth-provider";
 
-type Errors = { name?: string; email?: string; password?: string; confirmPassword?: string; form?: string };
+type Errors = {
+  name?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  form?: string;
+};
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -57,16 +63,72 @@ export default function SignUpPage() {
       eyebrow="Create your account"
       title="Start with a verified identity."
       description="Create a verified identity first; after verification, QuoteCompare guides you into an organization-scoped workspace with rules-backed access."
-      footer={<p>Already have an account? <Link href="/signin">Sign in</Link></p>}
+      footer={
+        <p>
+          Already have an account? <Link href="/signin">Sign in</Link>
+        </p>
+      }
     >
-      {!configured ? <div className="form-notice form-notice--warning" role="alert">Firebase is not configured yet. Add your web app values to <code>.env.local</code> before creating an account.</div> : null}
-      {errors.form ? <div className="form-notice form-notice--error" role="alert">{errors.form}</div> : null}
+      {!configured ? (
+        <div className="form-notice form-notice--warning" role="alert">
+          Firebase is not configured yet. Add your web app values to <code>.env.local</code> before
+          creating an account.
+        </div>
+      ) : null}
+      {errors.form ? (
+        <div className="form-notice form-notice--error" role="alert">
+          {errors.form}
+        </div>
+      ) : null}
       <form className="auth-form" onSubmit={handleSubmit} noValidate>
-        <FormField id="signup-name" label="Full name" type="text" autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} error={errors.name} placeholder="Your full name" />
-        <FormField id="signup-email" label="Work email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} error={errors.email} placeholder="name@company.com" />
-        <FormField id="signup-password" label="Password" type="password" autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} error={errors.password} hint="At least 8 characters with uppercase, lowercase, and a number." placeholder="Create a strong password" />
-        <FormField id="signup-confirm-password" label="Confirm password" type="password" autoComplete="new-password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} error={errors.confirmPassword} placeholder="Repeat your password" />
-        <button className="button button--accent auth-submit" type="submit" disabled={submitting || !configured}>{submitting ? "Creating account…" : "Create secure account"}</button>
+        <FormField
+          id="signup-name"
+          label="Full name"
+          type="text"
+          autoComplete="name"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          error={errors.name}
+          placeholder="Your full name"
+        />
+        <FormField
+          id="signup-email"
+          label="Work email"
+          type="email"
+          autoComplete="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          error={errors.email}
+          placeholder="name@company.com"
+        />
+        <FormField
+          id="signup-password"
+          label="Password"
+          type="password"
+          autoComplete="new-password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          error={errors.password}
+          hint="At least 8 characters with uppercase, lowercase, and a number."
+          placeholder="Create a strong password"
+        />
+        <FormField
+          id="signup-confirm-password"
+          label="Confirm password"
+          type="password"
+          autoComplete="new-password"
+          value={confirmPassword}
+          onChange={(event) => setConfirmPassword(event.target.value)}
+          error={errors.confirmPassword}
+          placeholder="Repeat your password"
+        />
+        <button
+          className="button button--accent auth-submit"
+          type="submit"
+          disabled={submitting || !configured}
+        >
+          {submitting ? "Creating account…" : "Create secure account"}
+        </button>
       </form>
     </AuthShell>
   );

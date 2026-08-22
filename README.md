@@ -1,40 +1,30 @@
 # QuoteCompare
 
-QuoteCompare is a procurement decision workspace that turns supplier quotations into structured, comparable, auditable purchasing decisions.
+QuoteCompare is an organization-secured procurement workspace for maintaining suppliers and turning quotations into structured, auditable purchasing decisions.
 
-## Phase 3 — Organizations, Roles & Firebase Security
+## Phase 4 — Supplier Management
 
-Phase 3 builds the authorization boundary that future supplier, quotation, comparison, and award data will rely on.
+Phase 4 adds a real supplier directory on top of the existing Next.js, TypeScript, Tailwind, Firebase Authentication, and Firestore foundation.
 
 ### Included
 
-- Firebase Authentication from Phase 2
-- Cloud Firestore client configuration
-- Organization onboarding after verified sign-in
-- Organization-scoped data model
-- First workspace creator becomes **Admin**
-- Four roles: Admin, Procurement Manager, Procurement Staff, Viewer
-- Central permission helpers for authorization-aware UI
-- Workspace gate that requires an active organization membership
-- Organization name management for Admins
-- Member roster sourced from Firestore
-- Role and permission matrix in Settings
-- Firestore Security Rules
-- Storage Security Rules prepared for quotation files
-- Firebase configuration files for rules deployment
-- Existing readable editorial UI and accessibility baseline
+- Redesigned warm editorial interface with improved shell, typography, spacing, responsive states, and accessible focus treatment
+- Organization-scoped supplier directory at `/suppliers`
+- Create and edit supplier records
+- Active/inactive supplier lifecycle that preserves historical context
+- Search by supplier, category, contact, or email
+- Status filtering and live directory summary
+- Client-side form validation with readable inline errors
+- Role-aware controls using the existing `suppliers.manage` permission
+- Firestore Security Rules that independently enforce organization membership and supplier write roles
+- No Firebase Storage dependency or other paid-only Firebase service
 
-## Firebase setup for Phase 3
+## Firebase free-plan setup
 
-1. Keep Email/Password enabled in **Firebase Authentication**.
-2. In Firebase Console, create a **Cloud Firestore** database.
-3. Keep your Phase 2 Firebase web configuration in `.env.local`.
-4. Deploy the included Firestore rules before creating an organization.
-5. Storage rules are included now; quotation upload itself arrives in a later phase.
-
-### Deploy rules with Firebase CLI
-
-From the project folder:
+1. Enable Email/Password in **Firebase Authentication**.
+2. Create a **Cloud Firestore** database.
+3. Copy `.env.example` to `.env.local` and add the Firebase web app values.
+4. Deploy the included Firestore rules before testing supplier changes.
 
 ```bash
 npx firebase-tools login
@@ -42,18 +32,7 @@ npx firebase-tools use --add
 npx firebase-tools deploy --only firestore:rules
 ```
 
-When Cloud Storage is enabled for the project, deploy its rules too:
-
-```bash
-npx firebase-tools deploy --only storage
-```
-
-The repository includes:
-
-- `firebase.json`
-- `firestore.rules`
-- `firestore.indexes.json`
-- `storage.rules`
+Only Authentication and Firestore are used. Supplier records are text data, so Phase 4 does not use Cloud Storage.
 
 ## Firestore structure
 
@@ -61,18 +40,19 @@ The repository includes:
 users/{uid}
 organizations/{organizationId}
 organizations/{organizationId}/members/{uid}
+organizations/{organizationId}/suppliers/{supplierId}
 ```
 
-The organization document owns the workspace. A user's `activeOrganizationId` helps the UI locate the active workspace, but **membership documents are the authorization source**. Setting an organization ID in a user profile does not grant access by itself.
+Supplier documents store the organization ID, name, normalized name, category, primary contact fields, address, internal notes, status, creator/updater IDs, and timestamps.
 
-## Roles
+## Authorization
 
-- **Admin** — organization settings, members, procurement work, quotations, suppliers, awards, reports
-- **Procurement Manager** — procurement work, quotations, suppliers, awards, reports
-- **Procurement Staff** — procurement work, quotations, suppliers, reports
-- **Viewer** — read-oriented/report access
+- **Admin** — view and manage suppliers
+- **Procurement Manager** — view and manage suppliers
+- **Procurement Staff** — view and manage suppliers
+- **Viewer** — view suppliers only
 
-Future modules will use the same permission helpers and extend Firebase rules per collection.
+The interface hides write controls for viewers, but Firestore Rules remain the actual authorization boundary. Supplier deletion is denied; records are marked inactive to preserve future quotation history.
 
 ## Run locally
 
@@ -83,26 +63,17 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-### Test Phase 3
+## Test Phase 4
 
-1. Sign in with a verified Firebase account.
-2. If the account has no organization, `/dashboard` should redirect to `/organization/setup`.
-3. Create an organization.
-4. Confirm you enter `/dashboard` as **Admin**.
-5. Open **Settings** and verify the organization name, current member, role, and permission matrix.
-6. Rename the organization and confirm the sidebar/topbar reflect the new name.
-7. Sign out and confirm protected routes still redirect to `/signin`.
-8. In Firestore, confirm the organization and membership documents were created under the expected organization path.
-
-## Security notes
-
-- Client-side route guards are for navigation and UX, not the final data boundary.
-- Firestore rules require an active organization membership to read organization data.
-- The initial Admin membership can only be created for the authenticated user who created that organization.
-- Admins cannot remove or demote themselves through the current member rule, reducing accidental workspace lockout.
-- Storage rules restrict quotation paths to active organization members and reserve writes for Admin, Manager, and Staff roles.
-- Quotation uploads are limited by rules to supported document/image types and 20 MB once that feature is enabled.
-- Firebase Admin SDK credentials are not included and must never be stored in `NEXT_PUBLIC_*` variables.
+1. Sign in with a verified account and enter an organization workspace.
+2. Deploy the Phase 4 Firestore rules.
+3. Open **Suppliers** and add a supplier with a name and category.
+4. Confirm the record appears in the table and summary counts.
+5. Search for it by name, contact, category, or email.
+6. Edit the supplier and confirm the updated date changes.
+7. Mark it inactive, filter to inactive records, then reactivate it.
+8. Test with a Viewer account and confirm write controls are unavailable and Firestore rejects direct writes.
+9. Check the layout on mobile; the supplier editor should use the full screen width and the directory table should remain horizontally accessible.
 
 ## Quality checks
 
@@ -115,4 +86,4 @@ npm run format:check
 
 ## Readability standard
 
-Visible metadata does not drop below 12px, while normal body/helper text generally stays at 13–16px or larger. This continues to apply to navigation, forms, statuses, settings, tables, cards, empty states, and mobile UI.
+Visible metadata does not drop below 12px. Body text, helper text, forms, navigation, table content, statuses, controls, empty states, and mobile UI generally remain 13–16px or larger.

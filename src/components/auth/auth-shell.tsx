@@ -19,7 +19,9 @@ export function AuthShell({
     <main className="auth-page">
       <header className="auth-header">
         <Brand href="/" />
-        <Link className="auth-back-link" href="/">Back to overview</Link>
+        <Link className="auth-back-link" href="/">
+          Back to overview
+        </Link>
       </header>
 
       <div className="auth-layout">
@@ -30,7 +32,10 @@ export function AuthShell({
           </div>
           <div className="auth-story__footer">
             <span className="auth-story__index">QC / AUTH</span>
-            <p>Authentication comes before supplier data, quotation files, approvals, and audit history.</p>
+            <p>
+              Authentication comes before supplier data, quotation files, approvals, and audit
+              history.
+            </p>
           </div>
         </section>
 

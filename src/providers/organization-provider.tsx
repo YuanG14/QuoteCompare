@@ -1,10 +1,22 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { loadOrganizationContext } from "@/lib/organizations/service";
 import { hasPermission, type WorkspacePermission } from "@/lib/organizations/permissions";
 import { useAuth } from "@/providers/auth-provider";
-import type { Organization, OrganizationMembership, WorkspaceUserProfile } from "@/types/organization";
+import type {
+  Organization,
+  OrganizationMembership,
+  WorkspaceUserProfile,
+} from "@/types/organization";
 
 export type OrganizationStatus = "idle" | "loading" | "ready" | "missing" | "error";
 
@@ -57,13 +69,18 @@ export function OrganizationProvider({ children }: { children: ReactNode }) {
       setProfile(null);
       setOrganization(null);
       setMembership(null);
-      setError(nextError instanceof Error ? nextError.message : "Unable to load your organization workspace.");
+      setError(
+        nextError instanceof Error
+          ? nextError.message
+          : "Unable to load your organization workspace.",
+      );
       setStatus("error");
     }
   }, [authStatus, user]);
 
   useEffect(() => {
-    void refresh();
+    const timer = window.setTimeout(() => void refresh(), 0);
+    return () => window.clearTimeout(timer);
   }, [refresh]);
 
   const value = useMemo<OrganizationContextValue>(

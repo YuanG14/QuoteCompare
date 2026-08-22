@@ -10,9 +10,14 @@ export function WorkflowPreview() {
         <div>
           <p className="eyebrow">The process</p>
           <h2>From requirement to supplier award.</h2>
-          <p className="panel-description">Every stage stays connected so the final decision has context, evidence, and an audit trail.</p>
+          <p className="panel-description">
+            Every stage stays connected so the final decision has context, evidence, and an audit
+            trail.
+          </p>
         </div>
-        <span className="workflow-security"><Icon name="shield" width={16} height={16} /> Human-controlled</span>
+        <span className="workflow-security">
+          <Icon name="shield" width={16} height={16} /> Human-controlled
+        </span>
       </div>
       <div className="workflow-track" aria-label="Planned procurement workflow">
         {workflow.map((step, index) => (

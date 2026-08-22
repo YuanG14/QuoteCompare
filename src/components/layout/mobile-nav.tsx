@@ -47,7 +47,12 @@ export function MobileNav() {
       </div>
       {open ? (
         <nav className="mobile-nav__menu" aria-label="Mobile navigation">
-          {organization && membership ? <div className="mobile-workspace-summary"><strong>{organization.name}</strong><span>{ORGANIZATION_ROLE_LABELS[membership.role]}</span></div> : null}
+          {organization && membership ? (
+            <div className="mobile-workspace-summary">
+              <strong>{organization.name}</strong>
+              <span>{ORGANIZATION_ROLE_LABELS[membership.role]}</span>
+            </div>
+          ) : null}
           {items.map((item) => {
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
@@ -64,8 +69,13 @@ export function MobileNav() {
             );
           })}
           <div className="mobile-account">
-            <div><strong>{user?.displayName || "Workspace member"}</strong><span>{user?.email}</span></div>
-            <button type="button" onClick={handleSignOut} disabled={signingOut}>{signingOut ? "Signing out…" : "Sign out"}</button>
+            <div>
+              <strong>{user?.displayName || "Workspace member"}</strong>
+              <span>{user?.email}</span>
+            </div>
+            <button type="button" onClick={handleSignOut} disabled={signingOut}>
+              {signingOut ? "Signing out…" : "Sign out"}
+            </button>
           </div>
         </nav>
       ) : null}
