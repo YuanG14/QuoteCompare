@@ -25,6 +25,12 @@ const steps = [
       "Supplier contacts, categories, statuses, search, and role-aware editing are active.",
     complete: true,
   },
+  {
+    title: "Document purchase requests",
+    description:
+      "Internal needs, budgets, required dates, item specifications, and request statuses are active.",
+    complete: true,
+  },
 ];
 
 export function GettingStarted() {
@@ -39,7 +45,7 @@ export function GettingStarted() {
             from the beginning.
           </p>
         </div>
-        <StatusBadge tone="info">4 of 4 complete</StatusBadge>
+        <StatusBadge tone="info">5 of 5 complete</StatusBadge>
       </div>
       <div className="setup-list">
         {steps.map((step, index) => (

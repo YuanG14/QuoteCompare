@@ -1,30 +1,35 @@
 # QuoteCompare
 
-QuoteCompare is an organization-secured procurement workspace for maintaining suppliers and turning quotations into structured, auditable purchasing decisions.
+QuoteCompare is an organization-secured procurement workspace that carries a documented internal need through supplier quotation comparison and an auditable purchasing decision.
 
-## Phase 4 — Supplier Management
+## Phase 5 — Purchase Requests
 
-Phase 4 adds a real supplier directory on top of the existing Next.js, TypeScript, Tailwind, Firebase Authentication, and Firestore foundation.
+Phase 5 adds the internal purchase request that begins procurement. It extends the Phase 4 supplier directory without replacing existing functionality.
 
 ### Included
 
-- Redesigned warm editorial interface with improved shell, typography, spacing, responsive states, and accessible focus treatment
-- Organization-scoped supplier directory at `/suppliers`
-- Create and edit supplier records
-- Active/inactive supplier lifecycle that preserves historical context
-- Search by supplier, category, contact, or email
-- Status filtering and live directory summary
-- Client-side form validation with readable inline errors
-- Role-aware controls using the existing `suppliers.manage` permission
-- Firestore Security Rules that independently enforce organization membership and supplier write roles
-- No Firebase Storage dependency or other paid-only Firebase service
+- Create organization-scoped purchase requests
+- Edit requests while role and lifecycle rules permit
+- Archive and restore requests without deleting procurement history
+- Draft, Open, and Closed statuses
+- Manager/Admin-only closing and reopening
+- Request number generation such as `PR-2026-A1B2C3`
+- Requester, department, purpose, budget, required date, and internal notes
+- Up to 30 requested item lines with quantity, unit, and specifications
+- Search by request number, title, requester, department, or purpose
+- Status and archive filters
+- Dedicated responsive request detail page
+- Deterministic TypeScript summary calculations for line count and total quantity
+- Organization-aware Firestore Security Rules
+- Existing Supplier Management, Authentication, organization roles, and editorial UI preserved
+- No Firebase Storage dependency
 
 ## Firebase free-plan setup
 
 1. Enable Email/Password in **Firebase Authentication**.
 2. Create a **Cloud Firestore** database.
 3. Copy `.env.example` to `.env.local` and add the Firebase web app values.
-4. Deploy the included Firestore rules before testing supplier changes.
+4. Deploy the current Firestore rules before testing Phase 5.
 
 ```bash
 npx firebase-tools login
@@ -32,7 +37,7 @@ npx firebase-tools use --add
 npx firebase-tools deploy --only firestore:rules
 ```
 
-Only Authentication and Firestore are used. Supplier records are text data, so Phase 4 does not use Cloud Storage.
+QuoteCompare currently uses Firebase Authentication and Firestore only. Purchase requests and supplier records are structured text data and do not require Cloud Storage.
 
 ## Firestore structure
 
@@ -41,18 +46,21 @@ users/{uid}
 organizations/{organizationId}
 organizations/{organizationId}/members/{uid}
 organizations/{organizationId}/suppliers/{supplierId}
+organizations/{organizationId}/purchaseRequests/{requestId}
 ```
 
-Supplier documents store the organization ID, name, normalized name, category, primary contact fields, address, internal notes, status, creator/updater IDs, and timestamps.
+The organization subcollections are the data boundary. A user profile's `activeOrganizationId` helps the UI locate the workspace, but the organization membership document remains the authorization source.
 
-## Authorization
+## Purchase request lifecycle
 
-- **Admin** — view and manage suppliers
-- **Procurement Manager** — view and manage suppliers
-- **Procurement Staff** — view and manage suppliers
-- **Viewer** — view suppliers only
+- **Draft** — still being prepared
+- **Open** — ready for RFQ preparation in Phase 6
+- **Closed** — procurement work completed or intentionally stopped
+- **Archived** — removed from the active register without deleting its record
 
-The interface hides write controls for viewers, but Firestore Rules remain the actual authorization boundary. Supplier deletion is denied; records are marked inactive to preserve future quotation history.
+Procurement Staff can create and manage non-closed requests. Procurement Managers and Admins can also close, reopen, edit, and archive closed requests. Viewers can read requests but cannot write them.
+
+The interface hides actions the member cannot use, while Firestore Rules independently enforce the same organization and role restrictions. Direct client writes cannot bypass these rules.
 
 ## Run locally
 
@@ -63,17 +71,20 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-## Test Phase 4
+## Test Phase 5
 
 1. Sign in with a verified account and enter an organization workspace.
-2. Deploy the Phase 4 Firestore rules.
-3. Open **Suppliers** and add a supplier with a name and category.
-4. Confirm the record appears in the table and summary counts.
-5. Search for it by name, contact, category, or email.
-6. Edit the supplier and confirm the updated date changes.
-7. Mark it inactive, filter to inactive records, then reactivate it.
-8. Test with a Viewer account and confirm write controls are unavailable and Firestore rejects direct writes.
-9. Check the layout on mobile; the supplier editor should use the full screen width and the directory table should remain horizontally accessible.
+2. Deploy the Phase 5 Firestore rules.
+3. Open **Procurement** and create a Draft purchase request.
+4. Add several item lines and confirm validation catches missing names, invalid quantities, and missing units.
+5. Open the resulting detail page and verify the request number, budget, required date, purpose, items, and calculated summary.
+6. Edit the request and change it to Open.
+7. Search for it and test Draft, Open, Closed, and Archived filters.
+8. As a Manager or Admin, close and reopen the request.
+9. Archive and restore the request.
+10. As a Viewer, confirm the request remains readable but write actions are unavailable.
+11. Confirm Firestore rejects unauthorized direct writes and cross-organization reads.
+12. Test the register, editor, and detail view on desktop and mobile widths.
 
 ## Quality checks
 
@@ -86,4 +97,8 @@ npm run format:check
 
 ## Readability standard
 
-Visible metadata does not drop below 12px. Body text, helper text, forms, navigation, table content, statuses, controls, empty states, and mobile UI generally remain 13–16px or larger.
+Visible metadata does not drop below 12px. Body text, helper text, forms, navigation, request tables, statuses, buttons, empty states, and mobile UI generally remain 13–16px or larger.
+
+## Next phase
+
+Phase 6 will turn an Open purchase request into a structured Request for Quotation without changing the original request record.

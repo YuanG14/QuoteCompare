@@ -1,13 +1,8 @@
-import { PagePlaceholder } from "@/components/ui/page-placeholder";
+import type { Metadata } from "next";
+import { PurchaseRequestDirectory } from "@/components/procurement/purchase-request-directory";
+
+export const metadata: Metadata = { title: "Purchase requests" };
 
 export default function ProcurementPage() {
-  return (
-    <PagePlaceholder
-      eyebrow="Procurement"
-      title="Purchase requests and RFQs"
-      description="Define what the organization needs, capture requirements, and prepare structured requests before quotations arrive."
-      icon="procurement"
-      phase="Phases 5–6"
-    />
-  );
+  return <PurchaseRequestDirectory />;
 }

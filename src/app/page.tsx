@@ -19,11 +19,11 @@ export default function Home() {
 
       <section className="landing-hero">
         <div className="landing-hero__copy">
-          <p className="eyebrow">QuoteCompare / Phase 4</p>
-          <h1>Know the suppliers behind every quotation.</h1>
+          <p className="eyebrow">QuoteCompare / Phase 5</p>
+          <h1>Define the need before asking for prices.</h1>
           <p className="landing-lead">
-            Build a clean, organization-secured vendor directory before comparisons begin. Supplier
-            contacts, categories, and availability now stay in one reliable record.
+            Create clear internal purchase requests with the purpose, budget, timing, items,
+            quantities, and specifications suppliers will eventually quote against.
           </p>
           <div className="landing-actions">
             <Link className="button button--accent" href="/signup">
@@ -36,20 +36,22 @@ export default function Home() {
         </div>
 
         <aside className="landing-auth-card">
-          <span className="landing-auth-card__index">04</span>
+          <span className="landing-auth-card__index">05</span>
           <div>
-            <p className="eyebrow eyebrow--on-dark">Supplier management</p>
-            <h2>Clear records before quote requests.</h2>
+            <p className="eyebrow eyebrow--on-dark">Purchase requests</p>
+            <h2>A controlled start for procurement work.</h2>
           </div>
           <ul className="landing-checks">
             <li>
-              <Icon name="check" width={18} height={18} /> Organization-scoped supplier records
+              <Icon name="check" width={18} height={18} /> Organization-scoped purchase requests
             </li>
             <li>
-              <Icon name="check" width={18} height={18} /> Search and status filtering
+              <Icon name="check" width={18} height={18} /> Multi-item requirements and
+              specifications
             </li>
             <li>
-              <Icon name="check" width={18} height={18} /> Role-aware create and edit controls
+              <Icon name="check" width={18} height={18} /> Draft, Open, Closed, and archive
+              workflows
             </li>
             <li>
               <Icon name="check" width={18} height={18} /> Firestore-enforced authorization
@@ -58,21 +60,20 @@ export default function Home() {
         </aside>
       </section>
 
-      <section className="landing-principles" aria-label="Phase 4 supplier principles">
+      <section className="landing-principles" aria-label="Phase 5 purchase request principles">
         <article>
           <span>01</span>
-          <h2>Clean identity.</h2>
+          <h2>Purpose first.</h2>
           <p>
-            Names, categories, and primary contacts remain consistent before quotations enter the
-            system.
+            Every procurement activity begins with a documented internal need and accountable
+            requester.
           </p>
         </article>
         <article>
           <span>02</span>
-          <h2>History preserved.</h2>
+          <h2>Requirements structured.</h2>
           <p>
-            Inactive suppliers stay in the directory so future procurement records do not lose
-            context.
+            Quantities, units, specifications, budget, and timing stay attached to the same request.
           </p>
         </article>
         <article>
