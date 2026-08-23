@@ -3,6 +3,7 @@ import type { NavigationItem } from "@/types/navigation";
 export const primaryNavigation: NavigationItem[] = [
   { label: "Overview", href: "/dashboard", icon: "dashboard" },
   { label: "Procurement", href: "/procurement", icon: "procurement" },
+  { label: "RFQs", href: "/rfqs", icon: "quotation" },
   { label: "Quotations", href: "/quotations", icon: "quotation" },
   { label: "Suppliers", href: "/suppliers", icon: "supplier" },
   { label: "Awards", href: "/awards", icon: "award" },

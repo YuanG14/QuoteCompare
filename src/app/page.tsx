@@ -19,11 +19,11 @@ export default function Home() {
 
       <section className="landing-hero">
         <div className="landing-hero__copy">
-          <p className="eyebrow">QuoteCompare / Phase 5</p>
-          <h1>Define the need before asking for prices.</h1>
+          <p className="eyebrow">QuoteCompare / Phase 6</p>
+          <h1>Give every supplier the same clear brief.</h1>
           <p className="landing-lead">
-            Create clear internal purchase requests with the purpose, budget, timing, items,
-            quantities, and specifications suppliers will eventually quote against.
+            Turn an Open purchase request into a structured RFQ with consistent items, requirements,
+            commercial expectations, deadlines, and a controlled supplier shortlist.
           </p>
           <div className="landing-actions">
             <Link className="button button--accent" href="/signup">
@@ -36,22 +36,20 @@ export default function Home() {
         </div>
 
         <aside className="landing-auth-card">
-          <span className="landing-auth-card__index">05</span>
+          <span className="landing-auth-card__index">06</span>
           <div>
-            <p className="eyebrow eyebrow--on-dark">Purchase requests</p>
-            <h2>A controlled start for procurement work.</h2>
+            <p className="eyebrow eyebrow--on-dark">RFQ builder</p>
+            <h2>One scope, shared consistently.</h2>
           </div>
           <ul className="landing-checks">
             <li>
-              <Icon name="check" width={18} height={18} /> Organization-scoped purchase requests
+              <Icon name="check" width={18} height={18} /> Purchase-request-linked RFQs
             </li>
             <li>
-              <Icon name="check" width={18} height={18} /> Multi-item requirements and
-              specifications
+              <Icon name="check" width={18} height={18} /> Required and preferred criteria
             </li>
             <li>
-              <Icon name="check" width={18} height={18} /> Draft, Open, Closed, and archive
-              workflows
+              <Icon name="check" width={18} height={18} /> Draft, Issued, and Closed lifecycle
             </li>
             <li>
               <Icon name="check" width={18} height={18} /> Firestore-enforced authorization
@@ -60,20 +58,18 @@ export default function Home() {
         </aside>
       </section>
 
-      <section className="landing-principles" aria-label="Phase 5 purchase request principles">
+      <section className="landing-principles" aria-label="Phase 6 RFQ principles">
         <article>
           <span>01</span>
-          <h2>Purpose first.</h2>
-          <p>
-            Every procurement activity begins with a documented internal need and accountable
-            requester.
-          </p>
+          <h2>Source preserved.</h2>
+          <p>The RFQ links to its purchase request without silently changing the original need.</p>
         </article>
         <article>
           <span>02</span>
-          <h2>Requirements structured.</h2>
+          <h2>Briefs stay consistent.</h2>
           <p>
-            Quantities, units, specifications, budget, and timing stay attached to the same request.
+            Every selected supplier receives the same items, criteria, deadline, and commercial
+            expectations.
           </p>
         </article>
         <article>

@@ -15,6 +15,7 @@ const permissionRows = [
   ["Manage members", "members.manage"],
   ["Create procurement work", "procurement.create"],
   ["Close purchase requests", "procurement.close"],
+  ["Issue and close RFQs", "rfqs.issue"],
   ["Manage quotations", "quotations.manage"],
   ["Manage suppliers", "suppliers.manage"],
   ["Approve supplier awards", "awards.approve"],
