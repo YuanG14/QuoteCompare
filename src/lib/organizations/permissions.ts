@@ -12,6 +12,7 @@ export type WorkspacePermission =
   | "members.manage"
   | "procurement.create"
   | "procurement.close"
+  | "rfqs.issue"
   | "quotations.manage"
   | "suppliers.manage"
   | "awards.approve"
@@ -23,6 +24,7 @@ const rolePermissions: Record<OrganizationRole, readonly WorkspacePermission[]> 
     "members.manage",
     "procurement.create",
     "procurement.close",
+    "rfqs.issue",
     "quotations.manage",
     "suppliers.manage",
     "awards.approve",
@@ -31,6 +33,7 @@ const rolePermissions: Record<OrganizationRole, readonly WorkspacePermission[]> 
   procurement_manager: [
     "procurement.create",
     "procurement.close",
+    "rfqs.issue",
     "quotations.manage",
     "suppliers.manage",
     "awards.approve",

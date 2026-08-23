@@ -31,6 +31,12 @@ const steps = [
       "Internal needs, budgets, required dates, item specifications, and request statuses are active.",
     complete: true,
   },
+  {
+    title: "Build requests for quotation",
+    description:
+      "RFQ items, requirements, deadlines, terms, supplier shortlists, and issuance controls are active.",
+    complete: true,
+  },
 ];
 
 export function GettingStarted() {
@@ -45,7 +51,7 @@ export function GettingStarted() {
             from the beginning.
           </p>
         </div>
-        <StatusBadge tone="info">5 of 5 complete</StatusBadge>
+        <StatusBadge tone="info">6 of 6 complete</StatusBadge>
       </div>
       <div className="setup-list">
         {steps.map((step, index) => (
