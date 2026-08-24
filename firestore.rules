@@ -101,6 +101,46 @@ service cloud.firestore {
         ]);
     }
 
+    function validQuotation(orgId, data) {
+      return data.organizationId == orgId
+        && data.quotationNumber is string && data.quotationNumber.matches('^QT-[0-9]{4}-[A-Z0-9]{6}$')
+        && data.rfqId is string && data.rfqId.size() >= 10 && data.rfqId.size() <= 80
+        && data.rfqNumber is string && data.rfqNumber.matches('^RFQ-[0-9]{4}-[A-Z0-9]{6}$')
+        && data.rfqTitle is string && data.rfqTitle.size() >= 3 && data.rfqTitle.size() <= 160
+        && data.supplierId is string && data.supplierId.size() >= 10 && data.supplierId.size() <= 80
+        && data.supplierName is string && data.supplierName.size() >= 2 && data.supplierName.size() <= 120
+        && data.normalizedSupplierName is string && data.normalizedSupplierName.size() >= 2 && data.normalizedSupplierName.size() <= 120
+        && data.currency == 'PHP'
+        && data.items is list && data.items.size() >= 1 && data.items.size() <= 30
+        && data.discount is number && data.discount >= 0 && data.discount <= 1000000000
+        && data.shipping is number && data.shipping >= 0 && data.shipping <= 1000000000
+        && data.installation is number && data.installation >= 0 && data.installation <= 1000000000
+        && data.tax is number && data.tax >= 0 && data.tax <= 1000000000
+        && data.warranty is string && data.warranty.size() >= 2 && data.warranty.size() <= 500
+        && data.deliveryCommitment is string && data.deliveryCommitment.size() >= 2 && data.deliveryCommitment.size() <= 500
+        && data.paymentTerms is string && data.paymentTerms.size() >= 2 && data.paymentTerms.size() <= 500
+        && data.notes is string && data.notes.size() <= 1000
+        && data.source is map
+        && data.source.type in ['manual', 'csv', 'pdf', 'excel']
+        && data.source.filename is string && data.source.filename.size() <= 180
+        && data.source.checksum is string && data.source.checksum.size() <= 64
+        && data.source.keys().hasOnly(['type', 'filename', 'checksum'])
+        && data.status in ['draft', 'needs_review', 'verified']
+        && ((data.status == 'draft' && data.submittedAt == null && data.verifiedAt == null && data.verifiedBy == '')
+          || (data.status == 'needs_review' && data.submittedAt is timestamp && data.verifiedAt == null && data.verifiedBy == '')
+          || (data.status == 'verified' && data.submittedAt is timestamp && data.verifiedAt is timestamp && data.verifiedBy is string && data.verifiedBy.size() > 0))
+        && data.createdBy is string && data.updatedBy is string
+        && data.createdAt is timestamp && data.updatedAt is timestamp
+        && data.keys().hasOnly([
+          'organizationId', 'quotationNumber', 'rfqId', 'rfqNumber', 'rfqTitle',
+          'supplierId', 'supplierName', 'normalizedSupplierName', 'currency', 'items',
+          'discount', 'shipping', 'installation', 'tax', 'warranty',
+          'deliveryCommitment', 'paymentTerms', 'notes', 'source', 'status',
+          'submittedAt', 'verifiedAt', 'verifiedBy', 'createdBy', 'updatedBy',
+          'createdAt', 'updatedAt'
+        ]);
+    }
+
     match /users/{userId} {
       allow read: if isSelf(userId);
       allow create: if isSelf(userId)
@@ -229,6 +269,57 @@ service cloud.firestore {
               && request.resource.data.status == 'closed'
               && hasRole(orgId, ['admin', 'procurement_manager'])
               && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'closedAt', 'updatedBy', 'updatedAt']))
+          );
+        allow delete: if false;
+      }
+
+      match /quotations/{quotationId} {
+        allow read: if isMember(orgId);
+        allow create: if hasRole(orgId, ['admin', 'procurement_manager', 'procurement_staff'])
+          && validQuotation(orgId, request.resource.data)
+          && request.resource.data.status == 'draft'
+          && quotationId == request.resource.data.rfqId + '_' + request.resource.data.supplierId
+          && request.resource.data.createdBy == request.auth.uid
+          && request.resource.data.updatedBy == request.auth.uid
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.updatedAt == request.time
+          && exists(/databases/$(database)/documents/organizations/$(orgId)/rfqs/$(request.resource.data.rfqId))
+          && get(/databases/$(database)/documents/organizations/$(orgId)/rfqs/$(request.resource.data.rfqId)).data.status == 'issued'
+          && get(/databases/$(database)/documents/organizations/$(orgId)/rfqs/$(request.resource.data.rfqId)).data.rfqNumber == request.resource.data.rfqNumber
+          && get(/databases/$(database)/documents/organizations/$(orgId)/rfqs/$(request.resource.data.rfqId)).data.title == request.resource.data.rfqTitle
+          && {'id': request.resource.data.supplierId, 'name': request.resource.data.supplierName} in get(/databases/$(database)/documents/organizations/$(orgId)/rfqs/$(request.resource.data.rfqId)).data.selectedSuppliers
+          && exists(/databases/$(database)/documents/organizations/$(orgId)/suppliers/$(request.resource.data.supplierId))
+          && get(/databases/$(database)/documents/organizations/$(orgId)/suppliers/$(request.resource.data.supplierId)).data.name == request.resource.data.supplierName;
+        allow update: if validQuotation(orgId, request.resource.data)
+          && request.resource.data.organizationId == resource.data.organizationId
+          && request.resource.data.quotationNumber == resource.data.quotationNumber
+          && request.resource.data.rfqId == resource.data.rfqId
+          && request.resource.data.rfqNumber == resource.data.rfqNumber
+          && request.resource.data.rfqTitle == resource.data.rfqTitle
+          && request.resource.data.supplierId == resource.data.supplierId
+          && request.resource.data.supplierName == resource.data.supplierName
+          && request.resource.data.normalizedSupplierName == resource.data.normalizedSupplierName
+          && request.resource.data.currency == resource.data.currency
+          && request.resource.data.createdBy == resource.data.createdBy
+          && request.resource.data.createdAt == resource.data.createdAt
+          && request.resource.data.updatedBy == request.auth.uid
+          && request.resource.data.updatedAt == request.time
+          && (
+            (resource.data.status == 'draft'
+              && request.resource.data.status == 'draft'
+              && hasRole(orgId, ['admin', 'procurement_manager', 'procurement_staff']))
+            || (resource.data.status == 'draft'
+              && request.resource.data.status == 'needs_review'
+              && hasRole(orgId, ['admin', 'procurement_manager', 'procurement_staff'])
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'submittedAt', 'verifiedAt', 'verifiedBy', 'updatedBy', 'updatedAt']))
+            || (resource.data.status == 'needs_review'
+              && request.resource.data.status == 'needs_review'
+              && hasRole(orgId, ['admin', 'procurement_manager', 'procurement_staff']))
+            || (resource.data.status == 'needs_review'
+              && request.resource.data.status == 'verified'
+              && hasRole(orgId, ['admin', 'procurement_manager'])
+              && request.resource.data.verifiedBy == request.auth.uid
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'verifiedAt', 'verifiedBy', 'updatedBy', 'updatedAt']))
           );
         allow delete: if false;
       }
